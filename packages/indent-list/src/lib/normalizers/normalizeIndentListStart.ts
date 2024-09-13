@@ -29,7 +29,9 @@ export const normalizeNextIndentListStart = (
   const prevListStart = (prevNode?.[INDENT_LIST_KEYS.listStart] as number) ?? 1;
   const currListStart = (node[INDENT_LIST_KEYS.listStart] as number) ?? 1;
   const restart = node[INDENT_LIST_KEYS.listRestart];
-  const listStart = restart == null ? prevListStart + 1 : restart;
+  // ! NEXTSECHQ - added a check for listIgnore property to conditionally increment lists
+  //const listStart = restart == null ? prevListStart + 1 : restart;
+  const listStart = restart == null ? (node?.listIgnore ? prevListStart : (prevListStart + 1)) : restart;
 
   if (currListStart !== listStart) {
     setElements(
